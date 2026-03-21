@@ -35,8 +35,7 @@ do
 
         case 2:
             {
-
-
+                MostrarReglas();
                 break;
             }
 
@@ -86,7 +85,7 @@ void EvaluarContenido()
     Console.Write("Ingrese la Duración en minutos: ");
     int duracion = int.Parse(Console.ReadLine());
 
-    Console.Write("Ingrese la Clasificación (Todo público, +13, +18): ");
+    Console.Write("Ingrese la Clasificación (tp, +13, +18): ");
     string clasificacion = Console.ReadLine().ToLower();
  
     Console.Write("Ingrese la Hora Programada (0-23):");
@@ -191,12 +190,35 @@ string ClasificacionImpacto(string produccion, int duracion, int hora)
 
 void MostrarReglas()
     {
-    
+    Console.WriteLine("Cargando reglas...");
 
+    for (int i = 0; i < 5; i++)
+    {
+        Console.WriteLine(".");
     }
+
+    Console.WriteLine("===== REGLAS DEL SISTEMA =====");
+
+    Console.WriteLine(" ===== Duración por tipo =====");
+    Console.WriteLine("Todo público: cualqer hora");
+    Console.WriteLine("+13: entre 6 y 22");
+    Console.WriteLine("+18: entre 22 y 5");
+
+    Console.WriteLine("                   ");
+
+    Console.WriteLine("=====  Duración por Tipo  =======");
+    Console.WriteLine("Película: 60-180 min");
+    Console.WriteLine("Serie: 20-90 min");
+    Console.WriteLine("Documental: 30-120 min");
+    Console.WriteLine("Evento: 30-240 min");
+    Console.WriteLine("                   ");
+    Console.WriteLine("                   ");
+
+}
 
 void MostrarEstadisticas()
 {
+    
 
 }
 
