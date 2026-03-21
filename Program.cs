@@ -41,7 +41,7 @@ do
 
         case 3:
             {
-
+                MostrarEstadisticas();
                 break;
             }
 
@@ -199,7 +199,7 @@ void MostrarReglas()
 
     Console.WriteLine("===== REGLAS DEL SISTEMA =====");
 
-    Console.WriteLine(" ===== Duración por tipo =====");
+    Console.WriteLine(" ===== Clasificación =====");
     Console.WriteLine("Todo público: cualqer hora");
     Console.WriteLine("+13: entre 6 y 22");
     Console.WriteLine("+18: entre 22 y 5");
@@ -218,7 +218,37 @@ void MostrarReglas()
 
 void MostrarEstadisticas()
 {
-    
+    Console.WriteLine("                        ");
+    Console.WriteLine("                         ");
+    Console.WriteLine("==== ESTADISTICAS ===== ");
+
+    Console.WriteLine("Total Evaluados: " + totalEvaluados);
+    Console.WriteLine("Publicados: " + publicados);
+    Console.WriteLine("Rechazados: " + rechazados);
+    Console.WriteLine("En revisión: " + enRevision);
+
+    string impactoPredominante = "Ninguno";
+
+    if (impactoAlto > impactoMedio && impactoAlto > impactoBajo)
+    {
+        impactoPredominante = "Alto";
+    }
+    else if (impactoMedio > impactoBajo)
+    {
+        impactoPredominante = "Medio";
+    }
+    else if (impactoBajo > 0)
+    {
+        impactoPredominante = "Bajo";
+    }
+
+    Console.WriteLine("Impacto predominante: " + impactoPredominante);
+
+    if (totalEvaluados > 0)
+    {
+        double porcentaje = (double)publicados / totalEvaluados * 100;
+        Console.WriteLine($"Porcentaje de aprobación {porcentaje:F2}");
+    }
 
 }
 
