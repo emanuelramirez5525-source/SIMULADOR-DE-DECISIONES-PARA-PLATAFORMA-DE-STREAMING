@@ -47,6 +47,7 @@ do
 
         case 4:
             {
+                ReiniciarEstadisticas();
                 break;
             }
 
@@ -254,5 +255,14 @@ void MostrarEstadisticas()
 
 void ReiniciarEstadisticas()
 {
+    totalEvaluados = 0;
+    publicados = 0;
+    rechazados = 0;
+    enRevision = 0;
 
+    impactoAlto = 0;
+    impactoMedio = 0;
+    impactoBajo = 0;
+
+    Console.WriteLine("Estadistícas Reiniciadas Correctamente!");
 }
