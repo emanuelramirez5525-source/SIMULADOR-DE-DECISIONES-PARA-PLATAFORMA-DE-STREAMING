@@ -20,7 +20,7 @@ do
     Console.WriteLine("4. Reiniciar estadisticas");
     Console.WriteLine("5. Salir");
 
-    Console.Write("Presione uno de los 5 números para seleccionar una opción:");
+    Console.Write("Seleccione una opción:");
 
     opcion = int.Parse(Console.ReadLine());
 
@@ -53,7 +53,8 @@ do
 
         case 5:
             {
-                Console.WriteLine("Resumen Final de la decisión");
+                Console.WriteLine(" ==== RESUMEN FINAL ==== ");
+                MostrarEstadisticas();
             }
 
             break;
@@ -61,8 +62,7 @@ do
 
         default:
             {
-
-
+                Console.WriteLine("Opción no válida");
                 break;
             }
 
@@ -89,10 +89,10 @@ void EvaluarContenido()
     Console.Write("Ingrese la Clasificación (tp, +13, +18): ");
     string clasificacion = Console.ReadLine().ToLower();
  
-    Console.Write("Ingrese la Hora Programada (0-23):");
+    Console.Write("Ingrese la Hora Programada (0-23): ");
     int hora = int.Parse(Console.ReadLine());
 
-    Console.Write("Ingrese el Nivel de Producción: (bajo, medio, alto)");
+    Console.Write("Ingrese el Nivel de Producción: (bajo, medio, alto): ");
     string produccion = Console.ReadLine().ToLower();
 
     (bool valido, string mensaje) = ValidacionTecnica(tipo, duracion, clasificacion, hora, produccion);
@@ -113,7 +113,7 @@ void EvaluarContenido()
 
         if (impacto == "Alto")
         {
-            decision = "Enviar revisión";
+            decision = "Enviar a revisión";
             enRevision++;
         }
         else
@@ -125,7 +125,7 @@ void EvaluarContenido()
     }
 
     totalEvaluados++;
-    Console.WriteLine("==== RESULTADOS =====");
+    Console.WriteLine("#==== RESULTADOS =====#");
     Console.WriteLine("Impacto: "+ impacto);
     Console.WriteLine("Decisión: "+ decision);
 }
@@ -135,19 +135,19 @@ void EvaluarContenido()
 (bool,string) ValidacionTecnica(string tipo, int duracion, string clasificacion, int hora, string produccion)
 {
     if (tipo == "pelicula" && (duracion < 60 || duracion > 180))
-        return (false, "ERROR!!! Duracion invalida para la película");
+        return (false, "ERROR!!! Duracion inválida para la película");
 
 
     if (tipo == "serie" && (duracion < 20 || duracion > 90))
-        return (false, "ERROR!!! Duracion invalida para la serie");
+        return (false, "ERROR!!! Duracion inválida para la serie");
 
 
     if (tipo == "documental" && (duracion < 30 || duracion > 120))
-        return (false, "ERROR!!! Duracion invalida para el documental");
+        return (false, "ERROR!!! Duracion inválida para el documental");
 
 
     if (tipo == "evento" && (duracion < 30 || duracion > 240))
-        return (false, "ERROR!!! Duracion invalida para el evento");
+        return (false, "ERROR!!! Duracion inválida para el evento");
 
 
     if (clasificacion == "+13" && (hora < 6 || hora > 22))
@@ -161,7 +161,7 @@ void EvaluarContenido()
     if (produccion == "bajo" &&  clasificacion == "+18")
         return (false, "ERROR!!! Producción no permitida para +18");
 
-    return (true, "Contenido valido");
+    return (true, "Contenido válido");
 }
 
 string ClasificacionImpacto(string produccion, int duracion, int hora)
@@ -198,16 +198,16 @@ void MostrarReglas()
         Console.WriteLine(".");
     }
 
-    Console.WriteLine("===== REGLAS DEL SISTEMA =====");
+    Console.WriteLine("#===== REGLAS DEL SISTEMA =====#");
 
     Console.WriteLine(" ===== Clasificación =====");
-    Console.WriteLine("Todo público: cualqer hora");
+    Console.WriteLine("tp: cualquier hora");
     Console.WriteLine("+13: entre 6 y 22");
     Console.WriteLine("+18: entre 22 y 5");
 
     Console.WriteLine("                   ");
 
-    Console.WriteLine("=====  Duración por Tipo  =======");
+    Console.WriteLine("#=====  Duración por Tipo  =======#");
     Console.WriteLine("Película: 60-180 min");
     Console.WriteLine("Serie: 20-90 min");
     Console.WriteLine("Documental: 30-120 min");
@@ -221,24 +221,32 @@ void MostrarEstadisticas()
 {
     Console.WriteLine("                        ");
     Console.WriteLine("                         ");
-    Console.WriteLine("==== ESTADISTICAS ===== ");
+    Console.WriteLine("#==== ESTADISTICAS =====#");
 
     Console.WriteLine("Total Evaluados: " + totalEvaluados);
     Console.WriteLine("Publicados: " + publicados);
     Console.WriteLine("Rechazados: " + rechazados);
     Console.WriteLine("En revisión: " + enRevision);
 
+    Console.WriteLine("                           ");
+    Console.WriteLine("                           ");
+
     string impactoPredominante = "Ninguno";
 
-    if (impactoAlto > impactoMedio && impactoAlto > impactoBajo)
+    if (totalEvaluados == 0)
+    {
+        impactoPredominante = "Ninguno";
+    }
+
+    else if (impactoAlto >= impactoMedio && impactoAlto >= impactoBajo)
     {
         impactoPredominante = "Alto";
     }
-    else if (impactoMedio > impactoBajo)
+    else if (impactoMedio >=  impactoBajo)
     {
         impactoPredominante = "Medio";
     }
-    else if (impactoBajo > 0)
+    else    
     {
         impactoPredominante = "Bajo";
     }
@@ -248,7 +256,7 @@ void MostrarEstadisticas()
     if (totalEvaluados > 0)
     {
         double porcentaje = (double)publicados / totalEvaluados * 100;
-        Console.WriteLine($"Porcentaje de aprobación {porcentaje:F2}");
+        Console.WriteLine($"Porcentaje de aprobación {porcentaje:F2}%");
     }
 
 }
@@ -264,5 +272,6 @@ void ReiniciarEstadisticas()
     impactoMedio = 0;
     impactoBajo = 0;
 
-    Console.WriteLine("Estadistícas Reiniciadas Correctamente!");
+    Console.WriteLine("Estadísticas reiniciadas correctamente!");
 }
+
