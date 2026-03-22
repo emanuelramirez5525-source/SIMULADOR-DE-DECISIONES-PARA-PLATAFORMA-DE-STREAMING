@@ -13,6 +13,8 @@ int opcion;
 
 do
 {
+    Console.Clear();
+
     Console.WriteLine("===== SISTEMA DE EVALUACION DE CONTENIDO ======");
     Console.WriteLine("1. Evaluar nuevo contenido");
     Console.WriteLine("2. Mostrar reglas del sistema");
@@ -20,80 +22,166 @@ do
     Console.WriteLine("4. Reiniciar estadisticas");
     Console.WriteLine("5. Salir");
 
-    Console.Write("Seleccione una opción:");
+    Console.Write("Seleccione una opción: ");
 
-    opcion = int.Parse(Console.ReadLine());
+    while (!int.TryParse(Console.ReadLine(), out opcion) || opcion < 1 || opcion > 5)
+    {
+        Console.WriteLine("Porfavor, Ingrese una opción válida (1-5): ");
+    }
 
     switch (opcion)
     {
 
         case 1:
             {
+                Console.Clear ();
                 EvaluarContenido();
+                Console.WriteLine("Presione una tecla para continuar...");
+                Console.ReadKey(true);
                 break;
             }
 
         case 2:
             {
+                Console.Clear();
                 MostrarReglas();
+                Console.WriteLine("Presione una tecla para continuar...");
+                Console.ReadKey(true);
                 break;
             }
 
         case 3:
             {
+                Console.Clear();
                 MostrarEstadisticas();
+                Console.WriteLine("Presione una tecla para continuar...");
+                Console.ReadKey(true);
                 break;
             }
 
         case 4:
             {
+                Console.Clear();
                 ReiniciarEstadisticas();
+                Console.WriteLine("Presione una tecla para continuar...");
+                Console.ReadKey(true);
                 break;
             }
 
         case 5:
             {
-                Console.WriteLine(" ==== RESUMEN FINAL ==== ");
+
+                Console.Clear();
+                Console.WriteLine(" #==== RESUMEN FINAL ====# ");
                 MostrarEstadisticas();
             }
 
             break;
-
-
-        default:
-            {
-                Console.WriteLine("Opción no válida");
-                break;
-            }
-
-
-    }
-
-
-
-       
+    }     
 
 } while (opcion != 5);
+
+
+bool ControladorIntentos(ref int intentos)
+{
+    intentos++;
+    if (intentos == 5)
+    {
+        Console.WriteLine("Demasiados intentos...");
+        Console.WriteLine("El formulario se reinciara..");
+        Console.WriteLine("Presione una tecla...");
+        Console.ReadKey(true);
+
+        Console.Clear();
+
+        intentos = 0;
+        return true;
+
+    }
+  return false;
+}
 
 void EvaluarContenido()
 {
     Console.WriteLine("#======= Evaluar Tipo de Contenido ==========#");
+    Console.WriteLine("(Si se equivoca mas de 5 veces, La opción evaluar contenido se reiniciara)");
 
-    Console.WriteLine("Ingrese el Tipo de contenido: (película, serie, documental, evento en vivo): ");
-    string tipo = Console.ReadLine().ToLower();
+    string tipo;
+    int intentosTipo = 0;
 
+    do
+    {
+        Console.WriteLine("Ingrese el Tipo de contenido: (pelicula, serie, documental, evento): ");
+        tipo = Console.ReadLine().ToLower();
+
+        if (tipo != "pelicula" && tipo != "serie" && tipo != "documental" && tipo != "evento")
+        {
+            Console.WriteLine("Tipo invalido...");
+
+            if (ControladorIntentos(ref intentosTipo)) return;
+        }
+
+    } while (tipo != "pelicula" && tipo != "serie" && tipo != "documental" && tipo != "evento" );
+
+
+    int duracion;
+    int intentosDuración = 0;
 
     Console.Write("Ingrese la Duración en minutos: ");
-    int duracion = int.Parse(Console.ReadLine());
 
-    Console.Write("Ingrese la Clasificación (tp, +13, +18): ");
-    string clasificacion = Console.ReadLine().ToLower();
- 
+    while (!int.TryParse(Console.ReadLine(), out duracion) || duracion <=0)
+    {
+        Console.WriteLine("Porfavor ingrese un número valido o mayor a 0: ");
+
+        if (ControladorIntentos(ref intentosDuración)) return;
+    }
+
+    string clasificacion;
+    int intentosClasificacion = 0;
+
+    do
+    {
+        Console.Write("Ingrese la Clasificación (tp, +13, +18): ");
+        clasificacion = Console.ReadLine().ToLower();
+
+        if (clasificacion != "tp" && clasificacion != "+13" && clasificacion != "+18")
+        {
+            Console.WriteLine("Clasificacíón invalida");
+
+            if (ControladorIntentos (ref intentosClasificacion)) return;
+
+        }
+
+
+    } while (clasificacion != "tp" && clasificacion != "+13" && clasificacion != "+18");
+
+
+    int hora;
+    int intentosHora = 0;   
     Console.Write("Ingrese la Hora Programada (0-23): ");
-    int hora = int.Parse(Console.ReadLine());
 
-    Console.Write("Ingrese el Nivel de Producción: (bajo, medio, alto): ");
-    string produccion = Console.ReadLine().ToLower();
+    while (!int.TryParse(Console.ReadLine(), out hora ) || hora < 0 || hora > 23)
+    {
+        Console.WriteLine("Porfavor, ingrese un valor valido (0-23)");
+
+        if (ControladorIntentos(ref intentosHora)) return;
+    }
+
+    string produccion;
+    int intentosProduccion = 0;
+    do
+    {
+        Console.Write("Ingrese el Nivel de Producción: (bajo, medio, alto): ");
+        produccion = Console.ReadLine().ToLower();
+
+        if (produccion != "bajo" && produccion != "medio" && produccion != "alto")
+        {
+            if (ControladorIntentos(ref intentosProduccion)) return;
+        }
+
+
+    } while (produccion != "bajo" && produccion != "medio" && produccion != "alto");
+    
 
     (bool valido, string mensaje) = ValidacionTecnica(tipo, duracion, clasificacion, hora, produccion);
 
@@ -125,6 +213,7 @@ void EvaluarContenido()
     }
 
     totalEvaluados++;
+    Console.Clear();
     Console.WriteLine("#==== RESULTADOS =====#");
     Console.WriteLine("Impacto: "+ impacto);
     Console.WriteLine("Decisión: "+ decision);
@@ -198,6 +287,8 @@ void MostrarReglas()
         Console.WriteLine(".");
     }
 
+    Console.WriteLine();
+
     Console.WriteLine("#===== REGLAS DEL SISTEMA =====#");
 
     Console.WriteLine(" ===== Clasificación =====");
@@ -219,7 +310,6 @@ void MostrarReglas()
 
 void MostrarEstadisticas()
 {
-    Console.WriteLine("                        ");
     Console.WriteLine("                         ");
     Console.WriteLine("#==== ESTADISTICAS =====#");
 
@@ -274,4 +364,6 @@ void ReiniciarEstadisticas()
 
     Console.WriteLine("Estadísticas reiniciadas correctamente!");
 }
+
+
 
