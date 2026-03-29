@@ -42,7 +42,7 @@ Muestra las reglas utilizadas para evaluar el contenido de forma clara y sencill
 
 Permite reiniciar todos los contadores del sistema a cero.
 
-S5.) Salir
+5.) Salir
 Finaliza el programa mostrando un resumen final de estadísticas.
 
 Uso del programa
